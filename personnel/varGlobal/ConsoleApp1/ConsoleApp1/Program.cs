@@ -37,6 +37,10 @@ class Program
             int BobProduction = random.Next(10, 50);
             Console.WriteLine($"Bob commits {BobProduction} lines of code.");
             myLineCounter += BobProduction;
+            //TODO : Take the work done by Alice too
+            //Soluce :
+            //linesOfCode += BobProduction;
+            //myLineCounter = linesOfCode;
         }
         Console.WriteLine($"Bob checks out, he claims the program has now {myLineCounter} lines");
         linesOfCode = myLineCounter; // he turns his work in
@@ -54,6 +58,9 @@ class Program
             int AliceProduction = random.Next(20, 80);
             Console.WriteLine($"Alice commits {AliceProduction} lines of code.");
             myLineCounter += AliceProduction;
+            //TODO : Take the work done by Bob too
+            //linesOfCode += AliceProduction;
+            //myLineCounter = linesOfCode;
         }
         Console.WriteLine($"Alice checks out, she claims the program has now {myLineCounter} lines");
         linesOfCode = myLineCounter; // she turns her work in
