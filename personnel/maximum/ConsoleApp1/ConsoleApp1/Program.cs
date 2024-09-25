@@ -8,10 +8,15 @@ List<Player> players = new List<Player>()
 };
 
 // Initialize search
-Player elder = players.First();
-int biggestAge = elder.Age;
+//Player elder = players.First();
+//int biggestAge = elder.Age;
 
 // search
+//Immutable
+int olderAge = players.Max(p => p.Age);
+//string olderPerson = players.Select(p => p.Name).Max(p => p.Age);
+
+/* Mutable
 foreach (Player p in players)
 {
     if (p.Age > biggestAge) // memorize new elder
@@ -19,9 +24,9 @@ foreach (Player p in players)
         elder = p;
         biggestAge = p.Age; // for future loops
     }
-}
+}*/
 
-Console.WriteLine($"Le plus agé est {elder.Name} qui a {elder.Age} ans");
+Console.WriteLine($"Le plus agé est {players[0].Name} qui a {olderAge} ans");
 
 Console.ReadKey();
 
