@@ -3,6 +3,12 @@
 silkyWay[0, 0] = true; // A1
 silkyWay[7, 7] = true; // H8
 
+for (int i = 0; i < 30; i++)
+{
+    Random random = new Random();
+    silkyWay[random.Next(0, 8), random.Next(0, 8)] = true;
+}
+
 void DrawBoard(bool[,] board)
 {
     Console.WriteLine("  12345678");
@@ -25,8 +31,6 @@ void DrawBoard(bool[,] board)
     }
     Console.WriteLine(" └────────┘");
 }
-
-// TODO Put silk on 30 more squares
 
 DrawBoard(silkyWay);
 
