@@ -6,8 +6,17 @@ silkyWay[7, 7] = true; // H8
 for (int i = 0; i < 30; i++)
 {
     Random random = new Random();
-    silkyWay[random.Next(0, 8), random.Next(0, 8)] = true;
+    int x;
+    int y;
+    do {
+        x = random.Next(8);
+        y = random.Next(8);
+    } while (silkyWay[x, y]);
+
+    silkyWay[x, y] = true;
 }
+
+DrawBoard(silkyWay);
 
 void DrawBoard(bool[,] board)
 {
@@ -31,8 +40,6 @@ void DrawBoard(bool[,] board)
     }
     Console.WriteLine(" └────────┘");
 }
-
-DrawBoard(silkyWay);
 
 // TODO Create a data structure that allow us to remember which square has already been tested
 
