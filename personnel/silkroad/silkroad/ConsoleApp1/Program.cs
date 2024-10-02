@@ -19,7 +19,11 @@ for (int i = 0; i < 30; i++)
 
 DrawBoard(silkyWay);
 bool[,] boardHasPassed = silkyWay;
-CheckWay(silkyWay, (0, 0), hasPassed);
+if (CheckWay(silkyWay, (0, 0), hasPassed))
+{
+    Console.SetCursorPosition(0, 15);
+    Console.WriteLine("Doable");
+}
 
 void DrawBoard(bool[,] board)
 {
@@ -44,96 +48,22 @@ void DrawBoard(bool[,] board)
     Console.WriteLine(" └────────┘");
 }
 
-void CheckWay(bool[,] board, (int x, int y) position, bool[,] hasPassed)
+bool CheckWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed)
 {
-    hasPassed[position.x, position.y] = true;
-    //Console.WriteLine($"{position}");
-    //X + 1
-    if (position.x < 7)
-    {
-        if (board[position.x + 1, position.y] && !hasPassed[position.x + 1, position.y])
-        {
-            CheckWay(board, (position.x + 1, position.y), hasPassed);
-        }
-    }
-    //X - 1
-    if (position.x >0)
-    {
-        if (board[position.x - 1, position.y] && !hasPassed[position.x - 1, position.y])
-        {
-            CheckWay(board, (position.x - 1, position.y), hasPassed);
-        }
-    }
-    //Y + 1
-    if(position.y < 7)
-    {
-        if (board[position.x, position.y + 1] && !hasPassed[position.x, position.y + 1])
-        {
-            CheckWay(board, (position.x, position.y + 1), hasPassed);
-        }
-    }
-    //Y - 1
-    if (position.y >0)
-    {
-        if(board[position.x, position.y - 1] && !hasPassed[position.x, position.y-1])
-        {
-            CheckWay(board, (position.x, position.y - 1), hasPassed);
-        }
-    }
-    //X + 1 && Y + 1
-    if (position.x < 7 && position.y < 7)
-    {
-        if (board[position.x + 1, position.y + 1] && !hasPassed[position.x + 1, position.y + 1])
-        {
-            CheckWay(board, (position.x + 1, position.y + 1), hasPassed);
-        }
-    }
-    //X - 1 && Y - 1
-    if (position.x > 0 && position.y > 0)
-    {
-        if (board[position.x - 1, position.y - 1] && !hasPassed[position.x - 1, position.y-1])
-        {
-            CheckWay(board, (position.x - 1, position.y - 1), hasPassed);
-        }
-    }
-    //X + 1 && Y - 1
-    if (position.y > 0 && position.x < 7)
-    {
-        if (board[position.x + 1, position.y - 1] && !hasPassed[position.x + 1, position.y - 1])
-        {
-            CheckWay(board, (position.x+1, position.y - 1), hasPassed);
-        }
-    }
-    //X - 1 && Y + 1
-    if (position.x > 0 && position.y < 7)
-    {
-        if (board[position.x - 1, position.y + 1] && !hasPassed[position.x - 1, position.y+1])
-        {
-            CheckWay(board, (position.x - 1, position.y + 1), hasPassed);
-        }
-    }
-    //Check has arrived
-    if (position.x == 7 && position.y == 7)
-    {
-        Console.WriteLine("Doable");
-    }
+    if (pos.x == 7 && pos.y == 7) { return true; } //Win condition
+    if (pos.x < 0 || pos.y < 0 || pos.x > 7 || pos.y > 7) { return false; } //Check border
+    if (hasPassed[pos.x, pos.y]) { return false; } //Check if has already passed
+    if (!board[pos.x, pos.y]) { return false; } //Check is silky
+    hasPassed[pos.x, pos.y] = true; //Make him pass here
+    if (CheckWay(board, (pos.x + 1, pos.y), hasPassed) ||
+    CheckWay(board, (pos.x, pos.y + 1), hasPassed) ||
+    CheckWay(board, (pos.x - 1, pos.y), hasPassed) ||
+    CheckWay(board, (pos.x, pos.y - 1), hasPassed) ||
+    CheckWay(board, (pos.x + 1, pos.y + 1), hasPassed) ||
+    CheckWay(board, (pos.x - 1, pos.y - 1), hasPassed) ||
+    CheckWay(board, (pos.x + 1, pos.y - 1), hasPassed) ||
+    CheckWay(board, (pos.x - 1, pos.y + 1), hasPassed)) { return true; }
+    else { return false; }
 }
-
-// TODO Create a data structure that allow us to remember which square has already been tested
-
-// TODO Create a data structure that allow us to remember the successful steps
-
-// TODO Write the recursive function
-// Recursive function that tells if we can reach H8 from the given position
-// The algorithm is in fact simple to spell out (even in french ;)):
-//
-//      Je peux sortir depuis cette case si:
-//          1. Je suis sur H8
-//
-//              ou
-//
-//          2. Je peux sortir depuis une des cases où je peux aller (et où je ne suis pas encore allé)
-
-// TODO Call the function and show the results
 
 Console.ReadLine();
