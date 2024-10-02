@@ -1,4 +1,5 @@
 ﻿bool[,] silkyWay = new bool[8, 8];
+bool[,] hasPassed = new bool[8, 8];
 
 silkyWay[0, 0] = true; // A1
 silkyWay[7, 7] = true; // H8
@@ -17,6 +18,8 @@ for (int i = 0; i < 30; i++)
 }
 
 DrawBoard(silkyWay);
+bool[,] boardHasPassed = silkyWay;
+CheckWay(silkyWay, (0, 0), hasPassed);
 
 void DrawBoard(bool[,] board)
 {
@@ -39,6 +42,81 @@ void DrawBoard(bool[,] board)
         Console.WriteLine("│");
     }
     Console.WriteLine(" └────────┘");
+}
+
+void CheckWay(bool[,] board, (int x, int y) position, bool[,] hasPassed)
+{
+    hasPassed[position.x, position.y] = true;
+    //Console.WriteLine($"{position}");
+    //X + 1
+    if (position.x < 7)
+    {
+        if (board[position.x + 1, position.y] && !hasPassed[position.x + 1, position.y])
+        {
+            CheckWay(board, (position.x + 1, position.y), hasPassed);
+        }
+    }
+    //X - 1
+    if (position.x >0)
+    {
+        if (board[position.x - 1, position.y] && !hasPassed[position.x - 1, position.y])
+        {
+            CheckWay(board, (position.x - 1, position.y), hasPassed);
+        }
+    }
+    //Y + 1
+    if(position.y < 7)
+    {
+        if (board[position.x, position.y + 1] && !hasPassed[position.x, position.y + 1])
+        {
+            CheckWay(board, (position.x, position.y + 1), hasPassed);
+        }
+    }
+    //Y - 1
+    if (position.y >0)
+    {
+        if(board[position.x, position.y - 1] && !hasPassed[position.x, position.y-1])
+        {
+            CheckWay(board, (position.x, position.y - 1), hasPassed);
+        }
+    }
+    //X + 1 && Y + 1
+    if (position.x < 7 && position.y < 7)
+    {
+        if (board[position.x + 1, position.y + 1] && !hasPassed[position.x + 1, position.y + 1])
+        {
+            CheckWay(board, (position.x + 1, position.y + 1), hasPassed);
+        }
+    }
+    //X - 1 && Y - 1
+    if (position.x > 0 && position.y > 0)
+    {
+        if (board[position.x - 1, position.y - 1] && !hasPassed[position.x - 1, position.y-1])
+        {
+            CheckWay(board, (position.x - 1, position.y - 1), hasPassed);
+        }
+    }
+    //X + 1 && Y - 1
+    if (position.y > 0 && position.x < 7)
+    {
+        if (board[position.x + 1, position.y - 1] && !hasPassed[position.x + 1, position.y - 1])
+        {
+            CheckWay(board, (position.x+1, position.y - 1), hasPassed);
+        }
+    }
+    //X - 1 && Y + 1
+    if (position.x > 0 && position.y < 7)
+    {
+        if (board[position.x - 1, position.y + 1] && !hasPassed[position.x - 1, position.y+1])
+        {
+            CheckWay(board, (position.x - 1, position.y + 1), hasPassed);
+        }
+    }
+    //Check has arrived
+    if (position.x == 7 && position.y == 7)
+    {
+        Console.WriteLine("Doable");
+    }
 }
 
 // TODO Create a data structure that allow us to remember which square has already been tested
