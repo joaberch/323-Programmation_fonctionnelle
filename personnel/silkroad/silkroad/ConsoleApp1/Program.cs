@@ -1,4 +1,6 @@
-﻿const int BOARDSIZE = 10;
+﻿using System.Drawing;
+
+const int BOARDSIZE = 10;
 bool[,] silkyWay = new bool[BOARDSIZE, BOARDSIZE];
 bool[,] hasPassed = new bool[BOARDSIZE, BOARDSIZE];
 
@@ -34,16 +36,22 @@ void DrawBoard(bool[,] board)
     Console.Write("  ");
     for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write(i); }
     Console.WriteLine();
-    //Console.WriteLine("  12345678");
-    Console.WriteLine(" ┌────────┐");
-    for (char row = 'A'; row <= 'H'; row++)
+    Console.Write(" ┌");
+    for (int i = 1; i<= BOARDSIZE; ++i) { Console.Write("─"); }
+    Console.WriteLine("┐");
+    for (char row = 'A'; row <= (char)((char)'A'+(BOARDSIZE-1)); row++)
     {
         Console.Write(row + "│");
         for (int col = 1; col <= BOARDSIZE; col++)
         {
             if (board[row - 'A', col - 1])
             {
+                if ((row - 'A' == 0 && col-1 == 0) || (row - 'A' == BOARDSIZE-1 && col - 1 == BOARDSIZE-1))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
                 Console.Write("█");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
@@ -52,7 +60,9 @@ void DrawBoard(bool[,] board)
         }
         Console.WriteLine("│");
     }
-    Console.WriteLine(" └────────┘");
+	Console.Write(" └");
+	for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write("─"); }
+	Console.WriteLine("┘");
 }
 
 bool CheckWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed)
