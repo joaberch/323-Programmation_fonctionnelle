@@ -7,7 +7,7 @@ bool[,] hasPassed = new bool[BOARDSIZE, BOARDSIZE];
 silkyWay[0, 0] = true; // A1
 silkyWay[BOARDSIZE-1, BOARDSIZE-1] = true; // H8
 
-for (int i = 0; i < 4*BOARDSIZE; i++)
+for (int i = 0; i < 4.5*BOARDSIZE; i++)
 {
     Random random = new Random();
     int x;
@@ -71,7 +71,13 @@ bool CheckWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed)
     if (pos.x < 0 || pos.y < 0 || pos.x > BOARDSIZE-1 || pos.y > BOARDSIZE - 1) { return false; } //Check border
     if (hasPassed[pos.x, pos.y]) { return false; } //Check if has already passed
     if (!board[pos.x, pos.y]) { return false; } //Check is silky
-    hasPassed[pos.x, pos.y] = true; //Make him pass here
+    hasPassed[pos.x, pos.y] = true; //Mark as passed
+
+    Console.SetCursorPosition(pos.y+2, pos.x+2);
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.Write("█");
+    Console.ForegroundColor = ConsoleColor.White;
+
     if (CheckWay(board, (pos.x + 1, pos.y), hasPassed) ||
     CheckWay(board, (pos.x, pos.y + 1), hasPassed) ||
     CheckWay(board, (pos.x - 1, pos.y), hasPassed) ||
