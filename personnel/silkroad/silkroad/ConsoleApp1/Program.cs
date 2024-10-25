@@ -1,28 +1,10 @@
 ﻿using System.Drawing;
 
 const int BOARDSIZE = 8;
-bool[,] silkyWay = new bool[BOARDSIZE, BOARDSIZE];
+bool[,] silkyWay = InitializeBoard();
 bool[,] hasPassed;
 
-silkyWay[0, 0] = true; // A1
-silkyWay[BOARDSIZE-1, BOARDSIZE-1] = true; // H8
-
-for (int i = 0; i < 4.5*BOARDSIZE; i++)
-{
-    Random random = new Random();
-    int x;
-    int y;
-    do {
-        x = random.Next(BOARDSIZE);
-        y = random.Next(BOARDSIZE);
-    } while (silkyWay[x, y]);
-
-    silkyWay[x, y] = true;
-}
-
 DrawBoard(silkyWay);
-
-bool[,] boardHasPassed = silkyWay;
 
 // Check doable by king
 if (CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false))
@@ -73,53 +55,83 @@ Console.SetCursorPosition(0, 20);
 Console.Write("Display path of (0) Nothing, (1) King, (2) Horse, (3) Tower, (4) Bishop : ");
 while (true)
 {
-    int input = 5;
-    while (input<0||input>4)
-    {
-        Console.SetCursorPosition(74, 20);
-        input = Convert.ToInt32(Console.ReadKey().Key-48);
-    }
-    switch (input)
-    {
-        case 0:
-			CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			break;
-        case 1:
-            CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-            CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-            CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
-			break;
-        case 2:
-			CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
-			break;
-		case 3:
-			CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
-			break;
-		case 4:
-			CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
-			CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
-			break;
+	try
+	{
+		int input = 5;
+		while (input < 0 || input > 4)
+		{
+			Console.SetCursorPosition(74, 20);
+			input = Convert.ToInt32(Console.ReadKey().Key - 48);
+		}
+		switch (input)
+		{
+			case 0:
+				CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				break;
+			case 1:
+				CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
+				break;
+			case 2:
+				CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
+				break;
+			case 3:
+				CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
+				break;
+			case 4:
+				CheckKingWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckHorseWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckTowerWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], false);
+				CheckBishopWay(silkyWay, (0, 0), new bool[BOARDSIZE, BOARDSIZE], true);
+				break;
+		}
+	} catch (Exception e)
+	{
+		Console.SetCursorPosition(0, 25);
+		Console.WriteLine(e.ToString());
 	}
 }
 
-void DrawPath(bool colorPath, int x, int y)
+bool[,] InitializeBoard()
+{
+	bool[,] board = new bool[BOARDSIZE, BOARDSIZE];
+
+	board[0, 0] = true; // A1
+	board[BOARDSIZE - 1, BOARDSIZE - 1] = true; // H8
+
+	Random random = new Random();
+	for (int i = 0; i < 4.5 * BOARDSIZE; i++)
+	{
+		int x;
+		int y;
+		do
+		{
+			x = random.Next(BOARDSIZE);
+			y = random.Next(BOARDSIZE);
+		} while (board[x, y]);
+
+		board[x, y] = true;
+	}
+	return board;
+}
+
+void DrawPath(bool colorPath, int x, int y, ConsoleColor pathColor)
 {
 	Console.SetCursorPosition(y, x);
 	if (colorPath)
 	{
-		Console.ForegroundColor = ConsoleColor.Red;
+		Console.ForegroundColor = pathColor;
 	}
 	else
 	{
@@ -138,7 +150,7 @@ bool CheckBishopWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool d
 	if (!board[pos.x, pos.y]) { return false; } //Check is silky
 	hasPassed[pos.x, pos.y] = true; //Mark as passed
 
-	DrawPath(displayPath, pos.x+2, pos.y+2);
+	DrawPath(displayPath, pos.x+2, pos.y+2, ConsoleColor.Red);
 
 	if (
         CheckBishopWay(board, (pos.x+1, pos.y+1), hasPassed, displayPath) ||
@@ -158,7 +170,7 @@ bool CheckTowerWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool di
 	if (!board[pos.x, pos.y]) { return false; } //Check is silky
 	hasPassed[pos.x, pos.y] = true; //Mark as passed
 
-	DrawPath(displayPath, pos.x + 2, pos.y + 2);
+	DrawPath(displayPath, pos.x + 2, pos.y + 2, ConsoleColor.Red);
 
 	if (
         CheckTowerWay(board, (pos.x+1, pos.y), hasPassed, displayPath) ||
@@ -178,7 +190,7 @@ bool CheckHorseWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool di
 	if (!board[pos.x, pos.y]) { return false; } //Check is silky
 	hasPassed[pos.x, pos.y] = true; //Mark as passed
 
-	DrawPath(displayPath, pos.x + 2, pos.y + 2);
+	DrawPath(displayPath, pos.x + 2, pos.y + 2, ConsoleColor.Red);
 
 	if (
         CheckHorseWay(board, (pos.x+2, pos.y+1), hasPassed, displayPath) ||
@@ -193,38 +205,58 @@ bool CheckHorseWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool di
 	return false;
 }
 
-void DrawBoard(bool[,] board)
+void DrawHeaderNumber()
 {
-    Console.Write("  ");
-    for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write(i); }
-    Console.WriteLine();
-    Console.Write(" ┌");
-    for (int i = 1; i<= BOARDSIZE; ++i) { Console.Write("─"); }
-    Console.WriteLine("┐");
-    for (char row = 'A'; row <= (char)((char)'A'+(BOARDSIZE-1)); row++)
-    {
-        Console.Write(row + "│");
-        for (int col = 1; col <= BOARDSIZE; col++)
-        {
-            if (board[row - 'A', col - 1])
-            {
-                if ((row - 'A' == 0 && col-1 == 0) || (row - 'A' == BOARDSIZE-1 && col - 1 == BOARDSIZE-1))
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                }
-                Console.Write("█");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else
-            {
-                Console.Write(" ");
-            }
-        }
-        Console.WriteLine("│");
-    }
+	Console.Write("  ");
+	for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write(i); }
+	Console.WriteLine();
+}
+
+void DrawBoardRows(bool[,] board)
+{
+	for (char row = 'A'; row <= (char)((char)'A' + (BOARDSIZE - 1)); row++)
+	{
+		Console.Write(row + "│");
+		for (int col = 1; col <= BOARDSIZE; col++)
+		{
+			if (board[row - 'A', col - 1])
+			{
+				if ((row - 'A' == 0 && col - 1 == 0) || (row - 'A' == BOARDSIZE - 1 && col - 1 == BOARDSIZE - 1))
+				{
+					Console.ForegroundColor = ConsoleColor.Green;
+				}
+				Console.Write("█");
+				Console.ForegroundColor = ConsoleColor.White;
+			}
+			else
+			{
+				Console.Write(" ");
+			}
+		}
+		Console.WriteLine("│");
+	}
+}
+
+void DrawTopBoard()
+{
+	Console.Write(" ┌");
+	for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write("─"); }
+	Console.WriteLine("┐");
+}
+
+void DrawBottomBoard()
+{
 	Console.Write(" └");
 	for (int i = 1; i <= BOARDSIZE; ++i) { Console.Write("─"); }
 	Console.WriteLine("┘");
+}
+
+void DrawBoard(bool[,] board)
+{
+	DrawHeaderNumber();
+	DrawTopBoard();
+	DrawBoardRows(board);
+	DrawBottomBoard();
 }
 
 bool CheckKingWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool displayPath)
@@ -235,7 +267,7 @@ bool CheckKingWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool dis
     if (!board[pos.x, pos.y]) { return false; } //Check is silky
     hasPassed[pos.x, pos.y] = true; //Mark as passed
 
-	DrawPath(displayPath, pos.x + 2, pos.y + 2);
+	DrawPath(displayPath, pos.x + 2, pos.y + 2, ConsoleColor.Red);
 
 	if (CheckKingWay(board, (pos.x + 1, pos.y), hasPassed, displayPath) ||
     CheckKingWay(board, (pos.x, pos.y + 1), hasPassed, displayPath) ||
@@ -249,5 +281,3 @@ bool CheckKingWay(bool[,] board, (int x, int y) pos, bool[,] hasPassed, bool dis
     hasPassed[pos.x, pos.y] = false;
     return false;
 }
-
-Console.ReadLine();
