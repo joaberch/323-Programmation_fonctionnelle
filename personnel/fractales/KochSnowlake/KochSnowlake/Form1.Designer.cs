@@ -1,7 +1,11 @@
-﻿namespace KochSnowlake
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace KochSnowlake
 {
     partial class Form1
     {
+        public Panel drawingPanel;
+        public NumericUpDown num;
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -26,28 +30,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            //Panel
-            Panel drawingPanel = new Panel()
+            //Title
+            Label title = new Label()
             {
-                Location = new Point(90, 59),
-                Name = "drawingPanel",
-                Size = new Size(800, 600),
-                TabIndex = 0,
+                Text = "Fractales",
+                Name = "Fractales",
+                Location = new Point(300, 10),
+                Font = new Font("Arial", 24, FontStyle.Bold),
+                Size = new Size(170, 30)
             };
-            drawingPanel.Paint += DrawingPanel_Paint;
+            this.Controls.Add(title);
+
+            //Number of iteration
+            Label iteration = new Label()
+            {
+                Text = "Iteration number:",
+                Location = new Point(650, 60)
+            };
+            num = new NumericUpDown()
+            {
+                Location = new Point(650, 80),
+                Value = 1,
+                //Minimum = 1,
+            };
+            num.Paint += new PaintEventHandler((sender, e) => { });
+            num.ValueChanged += new EventHandler((sender, e) => DrawingPanel_koch(sender, e, 50, 50, 0));
+            this.Controls.Add(num);
+            this.Controls.Add(iteration);
+
+
+            //Panel
+            drawingPanel = new Panel()
+            {
+                Location = new Point(20, 59),
+                Name = "drawingPanel",
+                Size = new Size(600, 300),
+                TabIndex = 0,
+                BorderStyle = BorderStyle.FixedSingle,
+            };
+            drawingPanel.Paint += new PaintEventHandler((sender, e) => DrawingPanel_koch(sender, e, 50, 50, 0));
+
             this.Controls.Add(drawingPanel);
 
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Text = "Fractales";
         }
 
-        private void DrawingPanel_Paint(object sender, PaintEventArgs e)
+        private void DrawingPanel_koch(object sender, PaintEventArgs e, int xPos, int yPos, int iteration)
         {
-            using (Pen pen = new Pen(Color.Blue, 1))
+            Pen pen = new Pen(Color.Blue);
+            int x = xPos;
+            int y = yPos;
+
+            e.Graphics.DrawLine(pen, new Point(x, y), new Point(x+= 50, y));
+            pen.Color = Color.Red;
+            e.Graphics.DrawLine(pen, new Point(x, y), new Point(x += 25, y -= 25));
+            e.Graphics.DrawLine(pen, new Point(x, y), new Point(x += 25, y += 25));
+            pen.Color = Color.Blue;
+            e.Graphics.DrawLine(pen, new Point(x, y), new Point(x += 50, y));
+            if (!(++iteration == num.Value))
             {
-                e.Graphics.DrawLine(pen, new Point(50, 50), new Point(75, 65));
+                DrawingPanel_koch(sender, e, xPos, yPos, iteration);
             }
         }
     }
